@@ -1,0 +1,18 @@
+{
+  "FolderOrderSettings": [
+    {"name":"Cenas","order":10,"path":"folders/Cenas.yy",},
+    {"name":"Objetos","order":9,"path":"folders/Objetos.yy",},
+    {"name":"Sprites","order":1,"path":"folders/Sprites.yy",},
+    {"name":"enemies_obj","order":5,"path":"folders/Objetos/enemies_obj.yy",},
+    {"name":"bullets_obj","order":6,"path":"folders/Objetos/bullets_obj.yy",},
+    {"name":"player_obj","order":7,"path":"folders/Objetos/player_obj.yy",},
+    {"name":"enemies_sprites","order":3,"path":"folders/Sprites/enemies_sprites.yy",},
+    {"name":"bullet_sprites","order":4,"path":"folders/Sprites/bullet_sprites.yy",},
+    {"name":"player_sprites","order":5,"path":"folders/Sprites/player_sprites.yy",},
+  ],
+  "ResourceOrderSettings": [
+    {"name":"global_data","order":2,"path":"objects/global_data/global_data.yy",},
+    {"name":"level","order":4,"path":"objects/level/level.yy",},
+    {"name":"gui","order":8,"path":"objects/gui/gui.yy",},
+  ],
+}
