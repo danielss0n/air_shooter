@@ -1,12 +1,8 @@
-sprite_size = sprite_get_width(s_enemy_01);
+new_enemy = noone; //create enemy instance var
+spawn_timer = 0; //set timer to count
+spawn_delay = 30; //set the milisecond timer will restart
 
-new_enemy = noone;
+//array of enemy instances in the screen:
 
-initial_x = random_range( 0, room_width );
-initial_y = random_range( 0, room_height - room_height / 2 );
 
-spawn_timer = 0;
-spawn_delay = 10;
-
-global.enemies_in_screen = [];
-enemy_index = 0;
+//enemy_index = 0;

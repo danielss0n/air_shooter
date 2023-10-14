@@ -1,181 +1,181 @@
-#region movement
+#region MOVE
+	//move directions
+	var move_x = 0; //- left; + right
+	var move_y = 0; //- down; + up
 
-	var move_x = 0; var move_y = 0;
+	//global player variables
+	global.adjusted_x = mouse_x - player_mid_w;
+	global.adjusted_y = mouse_y - player_mid_h;
+	global.player_x = x;
+	global.player_y = y;
 
-	#region get directions
-
-		if ( keyboard_check_direct(ord("W")) ) { move_y -= move_speed }
-		
-		if ( keyboard_check_direct(ord("S")) ) { move_y += move_speed }
-		
-		if ( keyboard_check_direct(ord("A")) ) { move_x -= move_speed }
-		
-		if ( keyboard_check_direct(ord("D")) ) { move_x += move_speed }
-
-	#endregion
-
-	#region normalize diagonals
-
-		if ( move_x != 0 && move_y != 0 ) {
+	//controls	
+	if ( keyboard_check_direct(ord("W")) ) { move_y -= move_speed };
+	if ( keyboard_check_direct(ord("S")) ) { move_y += move_speed };
+	if ( keyboard_check_direct(ord("A")) ) { move_x -= move_speed };
+	if ( keyboard_check_direct(ord("D")) ) { move_x += move_speed };
+	if ( keyboard_check_pressed(vk_space) ) { change_weapon() };
 	
-			var move_length = point_distance(0, 0, move_x, move_y);
-			var magnitude = move_speed;
-	
-		    move_x = move_x * (magnitude / move_length);
-		    move_y = move_y * (magnitude / move_length);
-	
-		}
-	
-	#endregion
+	//normalize diagonals
+	if (move_x != 0 && move_y != 0) {
+		var move_length = point_distance(0, 0, move_x, move_y);
+		var magnitude = move_speed;
 
-	#region move pixels in screen
-	
-		//stop move in the limit of window
+		move_x = move_x * (magnitude / move_length);
+		move_y = move_y * (magnitude / move_length);
+	}
+
+	//stop moving when touch on the sides of window
+	function move_limit() {
 		if (x - image_xscale * sprite_width / 2 < 0 - sprite_width) {
-		    x = image_xscale * sprite_width / 2 - sprite_width;
+			x = image_xscale * sprite_width / 2 - sprite_width;
 		}
-		
 		if (x + image_xscale * sprite_width / 2 > room_width) {
-		    x = room_width - image_xscale * sprite_width / 2;
+			x = room_width - image_xscale * sprite_width / 2;
 		}
-		
 		if (y - image_yscale * sprite_height / 2 < 0 - sprite_height) {
-		    y = image_yscale * sprite_height / 2 - sprite_height;
+			y = image_yscale * sprite_height / 2 - sprite_height;
 		}
-		
 		if (y + image_yscale * sprite_height / 2 > room_height ) {
-		    y = room_height - image_yscale * sprite_height / 2;
+			y = room_height - image_yscale * sprite_height / 2;
 		}
-	
-		x += move_x * move_speed;
-		y += move_y * move_speed;	
-		
-	#endregion
+	}
 
-#endregion
+	//move the obj in the screen
+	move_limit(); //check if is in limit of window
+	x += move_x * move_speed;
+	y += move_y * move_speed;	
 
-function shoot_bullets(aim_dir) {
-	
-	var projectiles =  ds_list_find_value(global.weapons, global.current_weapon)[?"projectiles"];
-	
-	for ( var i = 1; i <= projectiles; i ++ ) {
-		
-		//cordinates where bullets spawn
-		var initial_x = x + player_mid_w - bullet_mid_w;
-		var initial_y = y + player_mid_h - bullet_mid_h;
-		
-		var x_displacement = i * 20;
-		
-		//create obj
-		bullet = instance_create_depth(initial_x, initial_y, depth-1, bullet_obj);
-		
-		//adjust the mouse cordinate
-		var adjusted_x = mouse_x - player_mid_w;
-		var adjusted_y = mouse_y - player_mid_h;
-		
-		bullet.direction = point_direction( x, y, adjusted_x, adjusted_y );
-		
-	}	
-	
-	//get the weapon by ds
-	var weapon = ds_list_find_value(global.weapons, global.current_weapon);
-	//subtract the values of current magazine
-	weapon[?"current_magazine"] = weapon[?"current_magazine"] - 1;
-	show_debug_message( weapon[?"current_magazine"] )
-	
-}
+#endregion 
 
-#region change weapon
+#region WEAPON
 
 	function change_weapon() {
-		
 		//delay for click
 		var switch_delay = 15;
 		//quantity of weapons in inventory
 		var total_weapons = ds_list_size(global.weapons);
-		
-	    if ( global.weapon_switch_cooldown <= 0 ) {
-			
+		//if delay passed, than chenge weapon
+		if ( global.weapon_switch_cooldown <= 0 ) {
 			//change weapon
-	        global.current_weapon++;
+		    global.current_weapon++;
 			
 			//reset if last weapon selected
-	        if ( global.current_weapon >= total_weapons ) {
-	            global.current_weapon = 0;
-	        }
-			
+		    if ( global.current_weapon >= total_weapons ) {
+		        global.current_weapon = 0;
+		    }
 			//reset cooldown after change weapon
-	        global.weapon_switch_cooldown = switch_delay;
-
-	    }
+		    global.weapon_switch_cooldown = switch_delay;
+		}
 	}
 
 	//cooldown repeater
 	if (global.weapon_switch_cooldown > 0) {
-	    global.weapon_switch_cooldown--;
+		global.weapon_switch_cooldown--;
 	}
-
-	if (keyboard_check_released(vk_space)) {
-	    change_weapon();
-	}
-
-
-#endregion
-
-#region shoot
-
-	var aim_dir = point_direction(x, y, mouse_x, mouse_y);
 	
-	#region check first shoot
-	
+	//get current weapon
 	var weapon = ds_list_find_value(global.weapons, global.current_weapon);
-		//if there is bullets in magazine
-		if ( weapon[?"current_magazine"] > 0 ) {
-
-			if ( mouse_check_button(mb_left) ) {
-				
-				if ( !instance_exists(bullet) || can_shoot ) {
-					
-					shoot_bullets(aim_dir)
-					//can_shoot in creation is true 
-					can_shoot = false; 
-					
-				}
-			}
-			
-		//else there is no bullets and it has to reload
-		} else {
-			//timer in miliseconds
-			timer_reload ++;
-			//miliseconds exceed the reload time, then reset times shooted
-			if ( timer_reload >= ds_list_find_value(global.weapons, global.current_weapon)[?"reload_time"]*60) {
-				weapon[?"current_magazine"] = weapon[?"magazine"];
-				timer_reload = 0;
-			}	
-		}
-
-	#endregion
-
-	#region fire rate delay
 	
-		//start if the bullet exist 
-		if ( instance_exists(bullet) ) {
-			
-			//start after can_shoot changed to false
-			if ( !can_shoot ) {
-				
-				bullet.rate_timer ++;
-				
-				if ( bullet.rate_timer >= bullet.fire_rate ) {
-						
-					bullet.rate_timer = 0;
-					
-					can_shoot = true; //fire again til magazine 0
-					
-				}
+	//if game mode keyboard, always shoot
+	if(global.game_mode == 0){
+		weapon[?"automatic"] = true;
+		weapon[?"current_magazine"] = infinity;
+	}
+	
+	//check if weapon is automatic
+	if(global.game_mode == 1){
+		if(weapon[?"automatic"]){
+			//game_mode 1 with mouse
+			if ( mouse_check_button(mb_left) ) { shoot(weapon) };
+		} else {
+			//only shoot once pressed
+			if ( mouse_check_button_pressed(mb_left) ) { shoot(weapon) };
+		}
+	}
+	
+	//check if it has to reload
+	if (weapon[?"current_magazine"] <= 0) {
+		reload(weapon);
+	}
+	
+	function reload(weapon){
+		timer_reload ++;
+		//miliseconds exceed the reload time, then reset times shooted
+		if ( timer_reload >= weapon[?"reload_time"] * room_speed) {
+			weapon[?"current_magazine"] = weapon[?"magazine"];
+			timer_reload = 0;
+		}
+	}
+	
+	function shoot(weapon) {
+		//if there is no bullets and it has to reload
+		if (weapon[?"current_magazine"] > 0) {
+			if ( !instance_exists(bullet) || can_shoot ) {
+				create_bullets()
+				//when false, rate_timer will start to count
+				can_shoot = false; 
+			}
+		} 
+	}
+
+	//after shoot() function
+	function create_bullets() {
+		var projectiles =  ds_list_find_value(global.weapons, global.current_weapon)[?"projectiles"];
+	
+		for ( var i = 1; i <= projectiles; i ++ ) {
+			//cordinates where bullets spawn
+			var initial_x = x + player_mid_w - bullet_mid_w;
+			var initial_y = y + player_mid_h - bullet_mid_h;
+		
+			//create obj
+			bullet = instance_create_depth(initial_x, initial_y, depth-1, obj_bullet);
+			bullet.direction = 90;
+		}	
+	
+		//get the weapon by ds and subtract the values of current magazine
+		var weapon = ds_list_find_value(global.weapons, global.current_weapon);
+		weapon[?"current_magazine"] -= 1;
+	}
+
+	//fire rate delay
+	if (instance_exists(bullet)) {
+		//start counting miliseconds after can_shoot false
+		if (!can_shoot) {
+			bullet.rate_timer ++; //counting to shoot again
+			//fire again based in the fire rate
+			if (bullet.rate_timer >= bullet.fire_rate) {
+				bullet.rate_timer = 0;
+				can_shoot = true; //shoot() again and repeat process
 			}
 		}
-
-	#endregion
+	}
 
 #endregion
+
+//destroy player and enemy if both collide
+var list_length = ds_list_size(global.enemies_in_screen); 
+
+//for loop find the instance in list of enemies_in_screen that collided
+for (var i = 0; i < list_length; i++) {
+	
+	//find a enemy instance
+    var enemy_instance = ds_list_find_value(global.enemies_in_screen, i); 
+	
+	//check if this instance collided with the player
+    if (place_meeting(x, y, enemy_instance)) {
+		//create an explosion
+		instance_create_depth(x, y, depth-5, obj_explosion);
+		
+        enemy_instance.current_hp -= 999; //subtract hp of enemy
+		current_hp -= enemy_instance.touch_damage; //subtract hp of player
+		break; 
+    }
+}
+
+//game_mode 0 will awlays shoot automatically 
+if(global.game_mode == 0){
+	shoot(weapon);
+}
+
+no_hp_destroy(self);
