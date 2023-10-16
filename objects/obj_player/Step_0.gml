@@ -4,8 +4,8 @@
 	var move_y = 0; //- down; + up
 
 	//global player variables
-	global.adjusted_x = mouse_x - player_mid_w;
-	global.adjusted_y = mouse_y - player_mid_h;
+	global.adjusted_x = mouse_x - player_mid_width;
+	global.adjusted_y = mouse_y - player_mid_height;
 	global.player_x = x;
 	global.player_y = y;
 
@@ -58,6 +58,7 @@
 		//if delay passed, than chenge weapon
 		if ( global.weapon_switch_cooldown <= 0 ) {
 			//change weapon
+			
 		    global.current_weapon++;
 			
 			//reset if last weapon selected
@@ -125,11 +126,11 @@
 	
 		for ( var i = 1; i <= projectiles; i ++ ) {
 			//cordinates where bullets spawn
-			var initial_x = x + player_mid_w - bullet_mid_w;
-			var initial_y = y + player_mid_h - bullet_mid_h;
+			//var initial_x = x + player_mid_width + bullet_mid_width;
+			//var initial_y = y + player_mid_height + bullet_mid_height;
 		
 			//create obj
-			bullet = instance_create_depth(initial_x, initial_y, depth-1, obj_bullet);
+			bullet = instance_create_depth(x, y, depth-1, obj_bullet);
 			bullet.direction = 90;
 		}	
 	

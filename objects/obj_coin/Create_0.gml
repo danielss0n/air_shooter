@@ -1,2 +1,11 @@
-move_speed = random_range(1.3, 1.9); //speed bullet will fall
-x_direction = random_range(-.5, .5); //direction coin will move to sides
+move_speed = global.room_speed; 
+
+//alarm[0] = 5 * room_speed; //destroy coin after seconds
+
+direction = random(360); //get random direction degree
+distance_move = move_speed * 5;	//get random distance coin will percour
+
+//animation init variables:
+curve_asset = coin_animation;
+curve_position = 0;
+curve_speed = 0.01;

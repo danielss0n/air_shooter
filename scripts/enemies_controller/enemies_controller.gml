@@ -2,7 +2,7 @@
 function no_hp_destroy(instance){
 	if (instance.current_hp <= 0) { 
 		//create an explosion instance
-		instance_create_depth(instance.x, instance.y, depth+1, obj_explosion); 
+		instance_create_depth(instance.x, instance.y, depth-5, obj_explosion); 
 	
 		var instance_index = ds_list_find_index(global.enemies_in_screen, instance); 
 		

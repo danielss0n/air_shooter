@@ -1,16 +1,13 @@
 {
   "resourceType": "GMObject",
   "resourceVersion": "1.0",
-  "name": "obj_bullet",
-  "eventList": [
-    {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,},
-    {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,},
-  ],
+  "name": "scenary_obj",
+  "eventList": [],
   "managed": true,
   "overriddenProperties": [],
   "parent": {
-    "name": "bullets_obj",
-    "path": "folders/Objetos/bullets_obj.yy",
+    "name": "scenary_obj",
+    "path": "folders/Objetos/scenary_obj.yy",
   },
   "parentObjectId": null,
   "persistent": false,
@@ -28,10 +25,7 @@
   "physicsStartAwake": true,
   "properties": [],
   "solid": false,
-  "spriteId": {
-    "name": "spr_bullet_spark",
-    "path": "sprites/spr_bullet_spark/spr_bullet_spark.yy",
-  },
+  "spriteId": null,
   "spriteMaskId": null,
   "visible": true,
 }

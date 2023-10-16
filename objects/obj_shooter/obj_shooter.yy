@@ -1,16 +1,18 @@
 {
   "resourceType": "GMObject",
   "resourceVersion": "1.0",
-  "name": "obj_bullet",
+  "name": "obj_shooter",
   "eventList": [
-    {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,},
     {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,},
+    {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,},
+    {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","collisionObjectId":null,"eventNum":0,"eventType":2,"isDnD":false,},
+    {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","collisionObjectId":null,"eventNum":1,"eventType":2,"isDnD":false,},
   ],
   "managed": true,
   "overriddenProperties": [],
   "parent": {
-    "name": "bullets_obj",
-    "path": "folders/Objetos/bullets_obj.yy",
+    "name": "enemies_obj",
+    "path": "folders/Objetos/enemies_obj.yy",
   },
   "parentObjectId": null,
   "persistent": false,
@@ -29,8 +31,8 @@
   "properties": [],
   "solid": false,
   "spriteId": {
-    "name": "spr_bullet_spark",
-    "path": "sprites/spr_bullet_spark/spr_bullet_spark.yy",
+    "name": "sprite_enemy_kamikaze",
+    "path": "sprites/sprite_enemy_kamikaze/sprite_enemy_kamikaze.yy",
   },
   "spriteMaskId": null,
   "visible": true,

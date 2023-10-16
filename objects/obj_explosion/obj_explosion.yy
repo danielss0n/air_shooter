@@ -9,8 +9,8 @@
   "managed": true,
   "overriddenProperties": [],
   "parent": {
-    "name": "Objetos",
-    "path": "folders/Objetos.yy",
+    "name": "others_obj",
+    "path": "folders/Objetos/others_obj.yy",
   },
   "parentObjectId": null,
   "persistent": false,
@@ -29,8 +29,8 @@
   "properties": [],
   "solid": false,
   "spriteId": {
-    "name": "explosion_sprite",
-    "path": "sprites/explosion_sprite/explosion_sprite.yy",
+    "name": "spr_explosion",
+    "path": "sprites/spr_explosion/spr_explosion.yy",
   },
   "spriteMaskId": null,
   "visible": true,
